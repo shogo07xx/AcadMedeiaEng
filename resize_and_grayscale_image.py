@@ -1,3 +1,4 @@
+# %%
 from PIL import Image
 import matplotlib.pyplot as plt
 import os
@@ -6,21 +7,22 @@ directory = "./data/"  # 画像ディレクトリ
 input_filename = "mario128.png"
 output_filename = "mario_resized_64.png"  # リサイズ画像のファイル名
 
-def resize_image(img, size = (64, 64)):
+def resize_image(img, size=(64, 64)):
     # 画像をRGBAモードに変換
     img = img.convert("RGBA")
-    
+
     # 元画像のサイズを取得
     width, height = img.size
 
     # リサイズ後の画像を格納する新しいImageオブジェクトを作成
     resized_img = Image.new("RGBA", size)
-    
+
     # リサイズのためのスケールファクターを計算
     x_scale = width / size[0]
     y_scale = height / size[1]
-    
+
     # 最近傍補間によりリサイズ
+    # この部分を実装
     for y in range(size[1]):
         for x in range(size[0]):
             # リサイズ後の座標から元画像の座標を計算
@@ -53,3 +55,13 @@ plt.imshow(resized_img)
 plt.axis("off")
 plt.title("Resized Image")
 plt.show()
+
+# リサイズ後の画像をグレースケールに変換して表示する
+grayscale_image = resized_img.convert("L")
+plt.figure(figsize=(grayscale_image.size[0] / plt.rcParams["figure.dpi"], grayscale_image.size[1] / plt.rcParams["figure.dpi"]))
+plt.imshow(grayscale_image, cmap="gray")
+plt.axis("off")
+plt.title("Grayscale Image")
+plt.show()
+
+# %%

@@ -1,7 +1,9 @@
 # %%
+# %matplotlib inline
 import librosa
 import librosa.display
 import matplotlib.pyplot as plt
+from matplotlib import cm
 import numpy as np
 import os
 
@@ -26,11 +28,11 @@ y_harm, y_perc = librosa.effects.hpss(y)
 spectrogram = librosa.amplitude_to_db(librosa.magphase(librosa.stft(y_harm, hop_length=hop_length))[0], ref=np.max)
 
 # 波形とスペクトログラムをプロット
-fig, axs = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(14, 5))
+fig, axs = plt.subplots(2, 1, sharex=True, figsize=(14, 5))
 axs[0].plot(time, y)
 axs[0].set_ylabel("Amplitude")
 axs[0].set_title("Waveform")
-cmap = plt.get_cmap('inferno')
+cmap = cm.get_cmap('inferno')
 img = librosa.display.specshow(spectrogram, x_axis='time', y_axis='log', sr=sr, hop_length=hop_length, ax=axs[1], cmap=cmap)
 axs[1].set_xlabel("Time (s)")
 axs[1].set_ylabel("Frequency (Hz)")

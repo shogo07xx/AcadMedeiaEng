@@ -1,5 +1,4 @@
-# マイドライブ内にdataフォルダがあって、その中に　image.png という名前のデータがある場合は以下のようにします。
-
+# %%
 from PIL import Image
 import matplotlib.pyplot as plt
 import os
