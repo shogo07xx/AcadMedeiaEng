@@ -56,8 +56,21 @@ plt.axis("off")
 plt.title("Resized Image")
 plt.show()
 
+def to_grayscale_with_loop(img):
+    img = img.convert("RGBA")
+    width, height = img.size
+    grayscale_img = Image.new("L", img.size)
+    pixels = img.load()
+    for y in range(height):
+        for x in range(width):
+            r, g, b, a = pixels[x, y]
+            gray_value = int(0.2989 * r + 0.5870 * g + 0.1140 * b)  # グレースケール変換の計算式
+            grayscale_img.putpixel((x, y), gray_value)
+    return grayscale_img
+
 # リサイズ後の画像をグレースケールに変換して表示する
-grayscale_image = resized_img.convert("L")
+# grayscale_image = resized_img.convert("L")
+grayscale_image = to_grayscale_with_loop(resized_img)
 plt.figure(figsize=(grayscale_image.size[0] / plt.rcParams["figure.dpi"], grayscale_image.size[1] / plt.rcParams["figure.dpi"]))
 plt.imshow(grayscale_image, cmap="gray")
 plt.axis("off")
