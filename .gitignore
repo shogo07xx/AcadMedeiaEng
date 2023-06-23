@@ -1,2 +1,4 @@
-data/
+data/*
+!/data/mario_64_bits.png
+
 __pycache__/

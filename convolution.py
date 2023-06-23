@@ -6,7 +6,33 @@ import os
 import numpy as np
 
 directory = "./data/"  # 画像ディレクトリ
-input_filename = "MinamiHamabe.jpg"
+input_filename = "mario_64_bits.png"
+
+def resize_image(img, size=(64, 64)):
+    # 画像をRGBAモードに変換
+    img = img.convert("RGBA")
+
+    # 元画像のサイズを取得
+    width, height = img.size
+
+    # リサイズ後の画像を格納する新しいImageオブジェクトを作成
+    resized_img = Image.new("RGBA", size)
+
+    # リサイズのためのスケールファクターを計算
+    x_scale = width / size[0]
+    y_scale = height / size[1]
+
+    # 最近傍補間によりリサイズ
+    # この部分を実装
+    for y in range(size[1]):
+        for x in range(size[0]):
+            # リサイズ後の座標から元画像の座標を計算
+            src_x = int(x * x_scale)
+            src_y = int(y * y_scale)
+
+            resized_img.putpixel((x, y), img.getpixel((src_x, src_y)))
+
+    return resized_img
 
 def to_grayscale(img):
     img = img.convert("RGBA")  # 画像をRGBAモードに変換
@@ -16,7 +42,7 @@ def to_grayscale(img):
     for y in range(height):
         for x in range(width):
             r, g, b, a = img.getpixel((x, y))
-            gray_value = int(0.2126*r + 0.7152*g + 0.0722*b) # 明るさの計算
+            # gray_value = int(0.2126*r + 0.7152*g + 0.0722*b) # 明るさの計算
             gray_value = int((r + g + b) / 3)
 
             gray_img.putpixel((x, y), (gray_value, gray_value, gray_value, a))
@@ -53,11 +79,10 @@ def filtering(gray_img, kernel):
 
     return filtered_img
 
-# 図のサイズを指定
-fig = plt.figure(figsize=(10, 20))
-
+# %% (img = resize_image(img, (100, 100)) -> CO ?)
 # 画像を読み込む
 img = Image.open(os.path.join(directory, input_filename))
+img = resize_image(img, (64, 64))
 
 # グレースケール画像に変換する
 gray_img = to_grayscale(img)
@@ -104,12 +129,15 @@ kernel5 = np.array([  # 横エッジ抽出フィルタマスク
     [1, 1, 1]
 ])
 
-filtered_img0 = filtering(img, kernel0)
-filtered_img1 = filtering(img, kernel1)
+filtered_img0 = filtering(gray_img, kernel0)
+filtered_img1 = filtering(gray_img, kernel1)
 filtered_img2 = filtering(gray_img, kernel2)
-filtered_img3 = filtering(img, kernel3)
-filtered_img4 = filtering(img, kernel4)
-filtered_img5 = filtering(img, kernel5)
+filtered_img3 = filtering(gray_img, kernel3)
+filtered_img4 = filtering(gray_img, kernel4)
+filtered_img5 = filtering(gray_img, kernel5)
+
+# %% (Show results.)
+fig = plt.figure(figsize=(10, 20))
 
 # 結果を表示する
 n = 8
@@ -153,5 +181,5 @@ plt.imshow(filtered_img5)
 plt.axis("off")
 plt.title("Horizon Edge Extructed Image")
 
-plt.show()
+# plt.show()
 # %%
