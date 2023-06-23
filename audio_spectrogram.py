@@ -1,8 +1,9 @@
 # %%
+#!!! %matplotlib inline
 import librosa
 import librosa.display
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
 import os
 
 
@@ -26,6 +27,8 @@ y_harm, y_perc = librosa.effects.hpss(y)
 spectrogram = librosa.amplitude_to_db(librosa.magphase(librosa.stft(y_harm, hop_length=hop_length))[0], ref=np.max)
 
 # 波形とスペクトログラムをプロット
+#! AttributeError: module 'matplotlib' has no attribute 'axes'. Did you mean: 'axis'?
+#! 上記のエラーは v3.7 以上で確認. ∴ v3.7 以上ならば, pip install matplotlib==3.6.0 とダウングレード必須.
 fig, axs = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(14, 5))
 axs[0].plot(time, y)
 axs[0].set_ylabel("Amplitude")
@@ -48,7 +51,7 @@ spectrogram_height = axs[1].get_position().height
 cbar_ax.set_position([0.92, axs[1].get_position().y0, 0.02, spectrogram_height])
 
 plt.subplots_adjust(hspace=0.5)
-plt.show()
+# plt.show()
 
 import IPython.display
 IPython.display.Audio(audio_path)
