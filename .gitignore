@@ -1,4 +1,6 @@
 data/*
+
+# 否定演算子 「!/」 を使用
 !/data/mario_64_bits.png
 
 __pycache__/
